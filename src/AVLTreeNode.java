@@ -1,4 +1,172 @@
 
-public class AVLTreeNode {
+/*
+ * Class AVLTreeNode
+ * 
+ * (+)AVLTreeNode<T>(T initialData, AVLTreeNode<T> initialLeft, AVLTreeNode<T> initialRight)
+ * (+)AVLTreeNode<T>(T newData)
+ * (+)AVLTreeNode<T>(AVLTreeNode<T> newItem)
+ * 
+ * Members
+ * (-)T data
+ * (-)AVLTreeNode<T> left, right
+ * 
+ * Methods
+ * (+)T getData()
+ * (+)void setData(T newData)
+ * (+)AVLTreeNode<T> getLeft(), getRight()
+ * (+)void setLeft(), setLeft()
+ * 
+ */
+
+public class AVLTreeNode<T extends Comparable<T>> {
+
+  private T data;
+  private AVLTreeNode<T> left = null;
+  private AVLTreeNode<T> right = null;
+  int height;
+
+  public AVLTreeNode(T initialData, AVLTreeNode<T> initialLeft, AVLTreeNode<T> initialRight) {
+    data = initialData;
+    left = initialLeft;
+    right = initialRight;
+  }
+
+  public AVLTreeNode(T newData) {
+    data = newData;
+  }
+
+  public AVLTreeNode(AVLTreeNode<T> newItem) {
+    data = newItem.data;
+    left = newItem.left;
+    right = newItem.right;
+  }
+
+  public T getData() {
+    return data;
+  }
+
+  public void setData(T newData) {
+    data = newData;
+  }
+
+  public AVLTreeNode<T> getLeft() {
+    return left;
+  }
+
+  public AVLTreeNode<T> getRight() {
+    return right;
+  }
+
+  public void setLeft(AVLTreeNode<T> newLeft) {
+    left = newLeft;
+  }
+
+  public void setRight(AVLTreeNode<T> newRight) {
+    right = newRight;
+  }
+
+  public boolean isLeaf() {
+    return (left == null) && (right == null);
+  }
+
+  public T getLeftmostData() {
+    if (left == null)
+      return data;
+    else
+      return left.getLeftmostData();
+
+  }
+
+  public AVLTreeNode<T> getLeftmost(AVLTreeNode<T> current) {
+    if (current.getLeft() == null)
+      return current;
+    else
+      return getLeftmost(current.getLeft());
+
+  }
+
+  public void leftRightTraversal(AVLTreeNode<T> current) {
+    if (current.getLeft() != null)
+      leftRightTraversal(current.getLeft());
+
+    process(current);
+
+    if (current.getRight() != null)
+      leftRightTraversal(current.getRight());
+  }
+  
+  public void rightLeftTraversal(AVLTreeNode<T> current) {
+    if (current.getRight() != null)
+      rightLeftTraversal(current.getRight());
+
+    process(current);
+
+      if (current.getLeft() != null)
+        rightLeftTraversal(current.getLeft());
+  }
+
+  public T getRightmostData() {
+    if (right == null)
+      return data;
+    else
+      return right.getRightmostData();
+
+  }
+
+  public AVLTreeNode<T> getRightmost(AVLTreeNode<T> current) {
+    if (current.getRight() == null)
+      return current;
+    else
+      return getRightmost(current.getRight());
+
+  }
+
+  public AVLTreeNode<T> removeLeftmost() {
+    if (left == null)
+      return right;
+    else {
+      left = left.removeLeftmost();
+      return this;
+    }
+  }
+
+  public AVLTreeNode<T> removeRightmost() {
+    if (right == null)
+      return left;
+    else {
+      right = right.removeRightmost();
+      return this;
+    }
+  }
+
+  public T getImmediateSuccesorData() {
+    T data;
+
+    if (right.isLeaf()) {
+      data = right.getData();
+      removeRightmost();
+    } else {
+      data = right.getLeftmostData();
+      right.removeLeftmost();
+    }
+    return data;
+  }
+
+  public T getImmediatePredecessorData() {
+    T data;
+
+    if (left.isLeaf()) {
+      data = left.getData();
+      removeLeftmost();
+    } else {
+      data = left.getRightmostData();
+      left.removeRightmost();
+    }
+    return data;
+  }
+
+  private void process(AVLTreeNode<T> node) {
+    System.out.println(String.valueOf(node.getData()));
+  }
 
 }
