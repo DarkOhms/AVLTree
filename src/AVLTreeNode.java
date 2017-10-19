@@ -61,13 +61,6 @@ public class AVLTreeNode<T extends Comparable<T>> {
     return (left == null) && (right == null);
   }
 
-  public T findMin() {
-    if (left == null)
-      return data;
-    else
-      return left.getLeftmostData();
-
-  }
   
   public T getLeftmostData() {
 	    if (left == null)

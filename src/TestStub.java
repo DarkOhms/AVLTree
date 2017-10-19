@@ -5,11 +5,13 @@ public class TestStub {
 	public static void main(String[] args) {
 		
 		AVLTree<Integer> tree1 = new AVLTree<Integer>();
+		AVLTree<Integer> tree2 = new AVLTree<Integer>();
 		
+		int minimum;
 	
 	    int ARRAY_SIZE = 31;
-		int[] numbers = {16, 0, 13,26,9,25,7,29,19,11,21,10,4,17,23,5,18,28,24,1,8,6,15,20,14,30,3,27,2,22,12};
-		/*
+		int[] numbers = new int[ARRAY_SIZE];
+		
 	   
 	   ThreadLocalRandom random = ThreadLocalRandom.current();
 	   
@@ -35,15 +37,15 @@ public class TestStub {
 		 }else
 			 numbers[0] = next;
 	   }
-	   */
+	   
 	   for(int i = 0; i < ARRAY_SIZE; i++) {// load tree 1
-		 System.out.print("insert: ");
-		 System.out.println(numbers[i]);//printing order of insertion
 	     tree1.insert(numbers[i]);
 	   }
 	   
-	   tree1.delete(13);
-	   tree1.leftInOrderTraversal();
+	   while(true) {
+		   
+		   minimum = tree1.findMin();
+	   }
        
 	}
 

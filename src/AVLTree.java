@@ -40,6 +40,15 @@ public class AVLTree<T extends Comparable <T>> {
 	      } // end not found in current
 	    } // non null case
 	  }
+	  
+	  public T findMin() {
+		    
+		  if (root.getLeft() == null)
+		      return root.getData();
+		    else
+		      return root.getLeft().getLeftmostData();
+
+		  }
 
 	  public void insert(T data) {
 		  if(!search(data)) {//check for duplicate
