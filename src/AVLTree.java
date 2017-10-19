@@ -18,10 +18,18 @@ public class AVLTree<T extends Comparable <T>> {
 	  /*
 	   * public AVLTree(AVLTree<T>){ copy tree }
 	   */
-
+      public boolean isEmpty() {
+    	  if(root.getData() == null)
+    		  return true;
+    	  else
+    		  return false;
+      }
 
 	  public boolean search(T data) {
-	    return recursiveSearch(data, root);
+	    if(this.isEmpty())
+	    	return false;
+	    else
+		  return recursiveSearch(data, root);
 	  }
 
 	  private boolean recursiveSearch(T data, AVLTreeNode<T> current) {
@@ -42,7 +50,9 @@ public class AVLTree<T extends Comparable <T>> {
 	  }
 	  
 	  public T findMin() {
-		    
+		 if(this.isEmpty()){
+			 return null;
+		 }
 		  if (root.getLeft() == null)
 		      return root.getData();
 		    else
