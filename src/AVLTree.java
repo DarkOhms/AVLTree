@@ -42,14 +42,15 @@ public class AVLTree<T extends Comparable <T>> {
 	  }
 
 	  public void insert(T data) {
-		  if (root == null) {
+		  if(!search(data)) {//check for duplicate
+		    if (root == null) {
 			  root = new AVLTreeNode<T>(data);
 			  root.setHeight();
-		  } else {
+		    } else {
 			  root = recursiveInsert(data, root);
-		  }
-		  //System.out.println(root.getHeight(root.getLeft()));
-		  //System.out.println(root.getHeight(root.getRight()));
+		    }
+		  }else
+			  System.out.println(data.toString() + " already exists in the tree.");
 	  }
 	  
 	  private AVLTreeNode<T> recursiveInsert(T data, AVLTreeNode<T> current) {
@@ -168,6 +169,9 @@ public class AVLTree<T extends Comparable <T>> {
 	      current.setData(current.getRight().getLeftmostData());
 	      parentOfCursor = current;
 	      recursivePromoteSuccessor(current.getLeftmost(current.getRight()));
+	      current.setHeight();
+	      current = balance(current);
+	      
 	    }
 	  }
 
@@ -184,6 +188,8 @@ public class AVLTree<T extends Comparable <T>> {
 	      current.setData(current.getLeft().getRightmostData());
 	      parentOfCursor = current;
 	      recursivePromotePredecessor(current.getRightmost(current.getLeft()));
+	      current.setHeight();
+	      current = balance(current);
 	    }
 	  }
 	  

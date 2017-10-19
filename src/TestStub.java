@@ -42,6 +42,7 @@ public class TestStub {
 	     tree1.insert(numbers[i]);
 	   }
 	   
+	   tree1.delete(0);
 	   tree1.leftInOrderTraversal();
        
 	}
