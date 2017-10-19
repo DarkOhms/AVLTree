@@ -19,13 +19,6 @@ public class AVLTree<T extends Comparable <T>> {
 	   * public AVLTree(AVLTree<T>){ copy tree }
 	   */
 
-	  public void insert(T data) {
-	    if (root == null) {
-	      root = new AVLTreeNode<T>(data);
-	    } else {
-	      recursiveInsert(data, root);
-	    }
-	  }
 
 	  public boolean search(T data) {
 	    return recursiveSearch(data, root);
@@ -48,33 +41,72 @@ public class AVLTree<T extends Comparable <T>> {
 	    } // non null case
 	  }
 
-	  private void recursiveInsert(T data, AVLTreeNode<T> current) {
+	  public void insert(T data) {
+		  if (root == null) {
+			  root = new AVLTreeNode<T>(data);
+			  root.setHeight();
+		  } else {
+			  root = recursiveInsert(data, root);
+		  }
+		  //System.out.println(root.getHeight(root.getLeft()));
+		  //System.out.println(root.getHeight(root.getRight()));
+	  }
+	  
+	  private AVLTreeNode<T> recursiveInsert(T data, AVLTreeNode<T> current) {
 
-	    if (current.isLeaf()) {
+	    if (current.isLeaf()) {//leaf case
+	      
 	      if (current.getData().compareTo(data) > 0) {
 	        current.setLeft(new AVLTreeNode<T>(data));
-	      } else
+	        current.getLeft().setHeight();
+	      } else {
 	        current.setRight(new AVLTreeNode<T>(data));
-	    } else {
+	        current.getRight().setHeight();
+	      }
+	      
+	    } else {//non leaf case
 	      if (current.getData().compareTo(data) > 0) {// go left
 
 	        if (current.getLeft() == null) {
 	          current.setLeft(new AVLTreeNode<T>(data));
-	        } else
-	          recursiveInsert(data, current.getLeft());
+	          current.getLeft().setHeight();
+	        } else{
+	          current.setLeft(recursiveInsert(data, current.getLeft()));
+	          current = balance(current);
+	        }
 
 	      } else {// go right
 
 	        if (current.getRight() == null) {
 	          current.setRight(new AVLTreeNode<T>(data));
-	        } else {
-	          recursiveInsert(data, current.getRight());
+	          current.getRight().setHeight();
+	        } else{
+	          current.setRight(recursiveInsert(data, current.getRight()));
+	          current = balance(current);
 	        }
 	      }
 	    } // end not leaf case
+	   current.setHeight();
+	   return current;
 	  }// end recursive insert
 
-	  public void leftInOrderTraversal() {
+    private AVLTreeNode<T> balance(AVLTreeNode<T> current) {
+      
+      if(current.getHeight(current.getLeft()) == current.getHeight(current.getRight())+2) {//left imbalance
+	    if(current.getLeft().getLeft() == null || current.getHeight(current.getLeft().getLeft()) < current.getHeight(current.getLeft().getRight()))//scenario 2 leftReft
+	      current = leftRightRotation(current);
+	    else//scenario 1 leftLeft
+	    	current = leftLeftRotation(current);
+      }else if(current.getHeight(current.getRight()) == current.getHeight(current.getLeft())+2) {//right imbalance
+    	  if(current.getRight().getRight() == null ||  current.getHeight(current.getRight().getRight()) < current.getHeight(current.getRight().getLeft()) )//scenario 4 rightLeft
+    	    current = rightLeftRotation(current);
+    	  else//scenario 3 rightRight
+    		current = rightRightRotation(current);
+      }//end else if
+      return current;
+    }
+	 
+	public void leftInOrderTraversal() {
 
 	    root.leftRightTraversal(root);
 
@@ -153,5 +185,52 @@ public class AVLTree<T extends Comparable <T>> {
 	      parentOfCursor = current;
 	      recursivePromotePredecessor(current.getRightmost(current.getLeft()));
 	    }
+	  }
+	  
+	  /* Rotation Methods
+	   * k1 < k2 < k3 in any given rotation
+	     height adjustments will be made here for the children ONLY, 
+	     because the returned node will have its height set after
+	     return to insert
+	  */
+	  
+	  private AVLTreeNode<T> leftLeftRotation(AVLTreeNode<T> k2){
+		  AVLTreeNode<T> k1 = k2.getLeft(); //copy of left subtree
+		  k2.setLeft(k1.getRight());//should set null
+		  k1.setRight(k2);
+		  k2.height += -1;
+		  return k1;
+	  }
+	  
+	  private AVLTreeNode<T> leftRightRotation(AVLTreeNode<T> k3){
+		  AVLTreeNode<T> k1 = k3.getLeft(); //copy of left subtree
+		  AVLTreeNode<T> k2 = k1.getRight();
+		  k2.setLeft(k1);
+		  k3.setLeft(k2.getRight());
+		  k2.setRight(k3);
+		  k1.setRight(null);
+		  k1.height += -1;
+		  k3.height += -1;
+		  return k2;
+	  }
+	  
+	  private AVLTreeNode<T> rightRightRotation(AVLTreeNode<T> k1){
+		  AVLTreeNode<T> k2 = k1.getRight(); //copy of left subtree
+		  k1.setRight(k2.getLeft());//null?
+		  k2.setLeft(k1);
+		  k1.height += -1;
+		  return k2;
+	  }
+	  
+	  private AVLTreeNode<T> rightLeftRotation(AVLTreeNode<T> k1){
+		  AVLTreeNode<T> k3 = k1.getRight(); //copy of right subtree
+		  AVLTreeNode<T> k2 = k3.getLeft();
+		  k2.setLeft(k1);
+		  k3.setLeft(k2.getRight());
+		  k2.setRight(k3);
+		  k1.setRight(null);
+		  k3.height += -1;
+		  k1.height += -1;
+		  return k2;
 	  }
 }

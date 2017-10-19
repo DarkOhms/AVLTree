@@ -15,8 +15,10 @@
  * (+)void setData(T newData)
  * (+)AVLTreeNode<T> getLeft(), getRight()
  * (+)void setLeft(), setLeft()
+ * (+)T findMin()
  * 
  */
+import java.lang.Math;
 
 public class AVLTreeNode<T extends Comparable<T>> {
 
@@ -25,29 +27,19 @@ public class AVLTreeNode<T extends Comparable<T>> {
   private AVLTreeNode<T> right = null;
   int height;
 
-  public AVLTreeNode(T initialData, AVLTreeNode<T> initialLeft, AVLTreeNode<T> initialRight) {
-    data = initialData;
-    left = initialLeft;
-    right = initialRight;
-  }
 
   public AVLTreeNode(T newData) {
     data = newData;
   }
 
-  public AVLTreeNode(AVLTreeNode<T> newItem) {
-    data = newItem.data;
-    left = newItem.left;
-    right = newItem.right;
-  }
 
   public T getData() {
     return data;
   }
 
-  public void setData(T newData) {
-    data = newData;
-  }
+ public void setData(T newData) {
+	 data = newData;
+ }
 
   public AVLTreeNode<T> getLeft() {
     return left;
@@ -69,21 +61,44 @@ public class AVLTreeNode<T extends Comparable<T>> {
     return (left == null) && (right == null);
   }
 
-  public T getLeftmostData() {
+  public T findMin() {
     if (left == null)
       return data;
     else
       return left.getLeftmostData();
 
   }
+  
+  public T getLeftmostData() {
+	    if (left == null)
+	      return data;
+	    else
+	      return left.getLeftmostData();
 
-  public AVLTreeNode<T> getLeftmost(AVLTreeNode<T> current) {
+	  }
+
+  
+  void setHeight() {
+    
+	this.height = Math.max(getHeight(this.getLeft()), getHeight(this.getRight())) + 1;
+	//System.out.println(this.height);
+  }
+  
+  int getHeight(AVLTreeNode<T> node) {
+      if(node==null) {
+    	  return -1;
+      }else
+	    return node.height;
+  }
+  
+    public AVLTreeNode<T> getLeftmost(AVLTreeNode<T> current) {
     if (current.getLeft() == null)
       return current;
     else
       return getLeftmost(current.getLeft());
 
   }
+
 
   public void leftRightTraversal(AVLTreeNode<T> current) {
     if (current.getLeft() != null)
@@ -165,8 +180,9 @@ public class AVLTreeNode<T extends Comparable<T>> {
     return data;
   }
 
-  private void process(AVLTreeNode<T> node) {
+  void process(AVLTreeNode<T> node) {
     System.out.println(String.valueOf(node.getData()));
+   // System.out.print("Height is: ");
+   // System.out.print(getHeight(node));
   }
-
 }
