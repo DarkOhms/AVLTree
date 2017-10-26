@@ -2,20 +2,33 @@
 /*
  * Class AVLTreeNode
  * 
- * (+)AVLTreeNode<T>(T initialData, AVLTreeNode<T> initialLeft, AVLTreeNode<T> initialRight)
  * (+)AVLTreeNode<T>(T newData)
- * (+)AVLTreeNode<T>(AVLTreeNode<T> newItem)
  * 
  * Members
  * (-)T data
  * (-)AVLTreeNode<T> left, right
+ * (#)int height
  * 
  * Methods
  * (+)T getData()
  * (+)void setData(T newData)
  * (+)AVLTreeNode<T> getLeft(), getRight()
  * (+)void setLeft(), setLeft()
+ * (+)boolean isLeaf()
+ * (+)T getLeftmostData()
  * (+)T findMin()
+ * (#)void setHeight()
+ * (#)int getHeight(AVLTreeNode<T> node)
+ * (+)AVLTreeNode<T> getLeftmost(AVLTreeNode<T> current)
+ * (#)leftRightTraversal(AVLTreeNode<T> current)
+ * (#)rightLeftTraversal(AVLTreeNode<T> current)
+ * (+)T getRightmostData()
+ * (+)AVLTreeNode<T> getRightmost(AVLTreeNode<T> current)
+ * (+)AVLTreeNode<T> removeLeftmost()
+ * (+)AVLTreeNode<T> removeRightmost()
+ * (+)T getImmediateSuccesorData()
+ * (+)T getImmediatePredecessorData()
+ * (#)void process(AVLTreeNode<T> node) 
  * 
  */
 import java.lang.Math;
@@ -93,7 +106,7 @@ public class AVLTreeNode<T extends Comparable<T>> {
   }
 
 
-  public void leftRightTraversal(AVLTreeNode<T> current) {
+  void leftRightTraversal(AVLTreeNode<T> current) {
     if (current.getLeft() != null)
       leftRightTraversal(current.getLeft());
 
@@ -103,7 +116,7 @@ public class AVLTreeNode<T extends Comparable<T>> {
       leftRightTraversal(current.getRight());
   }
   
-  public void rightLeftTraversal(AVLTreeNode<T> current) {
+  void rightLeftTraversal(AVLTreeNode<T> current) {
     if (current.getRight() != null)
       rightLeftTraversal(current.getRight());
 

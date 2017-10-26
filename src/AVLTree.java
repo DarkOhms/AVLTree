@@ -1,4 +1,45 @@
-
+/*
+ *Luke Martin
+ *CSC 130 Section 1
+ *
+ *Class Associations  
+ *
+ *AVLTree<T> ---- 1:n contains ----- AVLTreeNode<T>
+ *
+ *Class AVLTree
+ *
+ *(+)AVLTree()
+ *(+)AVLTree(AVLTreeNode<T> newRoot)
+ *(+)AVLTree(T data)
+ *
+ *Members
+ *
+ *(-)AVLTreeNode<T> root
+ *(-)AVLTreeNode<T> parentOfCursor
+ *
+ *Methods
+ *
+ *(+)boolean isEmpty()
+ *(+)boolean search(T data)
+ *(-)boolean recursiveSearch(T data, AVLTreeNode<T> current)
+ *(+)T findMin()
+ *(+)void insert(T data)
+ *(-)AVLTreeNode<T> recursiveInsert(T data, AVLTreeNode<T> current)
+ *(+)void leftInOrderTraversal()
+ *(+)void rightInOrderTraversal()
+ *(+)void delete(T data)
+ *(-)AVLTreeNode<T> recursiveDelete(T data, AVLTreeNode<T> current)
+ *(-)void promoteImmediateSuccessor(AVLTreeNode<T> current)
+ *(-)void recursivePromoteSuccessor(AVLTreeNode<T> current)
+ *(-)void promoteImmediatePredecessor(AVLTreeNode<T> current)
+ *(-)void recursivePromotePredecessor(AVLTreeNode<T> current)
+ *(-)AVLTreeNode<T> balance(AVLTreeNode<T> current)
+ *(-)AVLTreeNode<T> leftLeftRotation(AVLTreeNode<T> k2)
+ *(-)AVLTreeNode<T> leftRightRotation(AVLTreeNode<T> k3)
+ *(-)AVLTreeNode<T> rightRightRotation(AVLTreeNode<T> k1)
+ *(-)AVLTreeNode<T> rightLeftRotation(AVLTreeNode<T> k1)
+ * 
+ */
 public class AVLTree<T extends Comparable <T>> {
 	  private AVLTreeNode<T> root;
 	  private AVLTreeNode<T> parentOfCursor;
@@ -125,19 +166,16 @@ public class AVLTree<T extends Comparable <T>> {
 
 	  public void delete(T data) {
 	    if (search(data)) {
-	      recursiveDelete(data, root);
+	      root = recursiveDelete(data, root);
 	    }
 	  }
 
-	  private void recursiveDelete(T data, AVLTreeNode<T> current) {
+	  private AVLTreeNode<T> recursiveDelete(T data, AVLTreeNode<T> current) {
 
 	    if (current.getData().equals(data)) {// found it
 	      if (current.isLeaf()) {
-	        if(parentOfCursor.getRight() == current){
-	          parentOfCursor.setRight(null);
-	        }else{
-	          parentOfCursor.setLeft(null);
-	        }
+	        current = null;
+	        return current;
 	      } else {
 	        if ((current.getLeft() != null && current.getRight() != null) || current.getRight() != null) {
 	          // promote immediate successor
@@ -152,13 +190,14 @@ public class AVLTree<T extends Comparable <T>> {
 	    } else {// look to continue search left or right
 	      parentOfCursor = current;
 	      if (current.getData().compareTo(data) > 0) {
-	        recursiveDelete(data, current.getLeft());
+	        current.setLeft(recursiveDelete(data, current.getLeft()));
 	      } else {
-	        recursiveDelete(data, current.getRight());
+	        current.setRight(recursiveDelete(data, current.getRight()));
 	      }
 	    } // end not found in current
 	    current.setHeight();
-	    current = balance(current);
+	    return balance(current);
+	    
 	  }
 
 	  private void promoteImmediateSuccessor(AVLTreeNode<T> current) {

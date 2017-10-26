@@ -10,10 +10,10 @@ public class TestStub {
 		
 		int minimum;
 	
-	    int ARRAY_SIZE = 31;
-		int[] numbers = {24,21,3,17,7,26,1,8,18,23,6,2,29,11,20,28,19,15,5,16,4,9,27,22,0,14,12,13,10,25,30};
+	    int ARRAY_SIZE = 4099;
+		int[] numbers = new int[ARRAY_SIZE];
 		
-	   /*
+	   
 	   ThreadLocalRandom random = ThreadLocalRandom.current();
 	   
 	   for(int i=0; i < ARRAY_SIZE; i++) {//load array
@@ -37,7 +37,7 @@ public class TestStub {
 		   numbers[i] = next;   
 		 }else
 			 numbers[0] = next;
-	   }*/
+	   }
 	   
 	   for(int i = 0; i < ARRAY_SIZE; i++) {// load tree 1
 	     tree1.insert(numbers[i]);
